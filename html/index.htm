@@ -1,0 +1,33 @@
+<html>
+    <body>
+        <div id="form-container" style="display:none">
+            <form id="form">
+                msg: <input id="msg" type="text" placeholder="enter some text here">
+            </form>
+        </div>
+        <div id="console"></div>
+        <script>
+            const url = 'ws://localhost:3000'
+            const protocol = 'echo-protocol'
+            var webSocket = new WebSocket(url, protocol)
+
+            webSocket.onopen = function (event) {
+                document.getElementById('form-container').style.display = 'block'
+            }
+
+            document.getElementById('form').addEventListener('submit', function(event) {
+                event.preventDefault()
+                const msg = document.getElementById('msg').value
+                webSocket.send(msg)
+                document.getElementById('msg').value = ''
+            })
+
+            webSocket.onmessage = function (event) {
+                document.getElementById('console').innerHTML = event.data + '<br>' + document.getElementById('console').innerHTML
+            }
+
+
+        </script>
+    </body>
+
+</html>
